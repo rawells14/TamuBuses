@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/rawells14/TamuBusTime/issues"
   },
-  "homepage": "https://github.com/rawells14/TamuBusTime#readme"
+  "homepage": "https://github.com/rawells14/TamuBusTime#readme",
+  "dependencies": {
+    "ejs": "^2.5.2"
+  }
 }

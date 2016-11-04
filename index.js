@@ -1,19 +1,24 @@
 var express = require("express");
 var app = express();
 
+var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+
+
 app.use(express.static('public'));
+app.set('views', 'public');
+app.set('view engine', 'html');
 app.set("port", process.env.PORT || 3000);
 
 
 app.get("/", function(req, res){
-	req.render("index.html");
-});
+	res.render("index.html");
+})
+var buses = require('./buses')
+app.use('/buses', buses)
 
-app.get("/3", function(req, res){
-	req.render("index.html");
-});
+
 
 io.on('connection', function(socket){
 	console.log('a user connected');
