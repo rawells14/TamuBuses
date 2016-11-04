@@ -1,0 +1,19 @@
+{
+  "name": "tamubustime",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rawells14/TamuBusTime.git"
+  },
+  "author": "Ryan Wells",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rawells14/TamuBusTime/issues"
+  },
+  "homepage": "https://github.com/rawells14/TamuBusTime#readme"
+}
