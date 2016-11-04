@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/rawells14/TamuBusTime#readme",
   "dependencies": {
-    "ejs": "^2.5.2"
+    "cheerio": "^0.22.0",
+    "ejs": "^2.5.2",
+    "request": "^2.78.0"
   }
 }
