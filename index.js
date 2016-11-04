@@ -3,11 +3,15 @@ var app = express();
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var drawnPaths = [];
-
 app.use(express.static('public'));
 app.set("port", process.env.PORT || 3000);
+
+
 app.get("/", function(req, res){
+	req.render("index.html");
+});
+
+app.get("/3", function(req, res){
 	req.render("index.html");
 });
 

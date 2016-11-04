@@ -1,3 +1,6 @@
 $( document ).ready(function() {
-    console.log( "ready!" );
+    Materialize.fadeInImage('#title')
+    setTimeout(function(){  }, 3000);
+
+
 });
