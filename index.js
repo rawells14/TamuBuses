@@ -8,15 +8,18 @@ var io = require('socket.io')(http);
 
 app.use(express.static('public'));
 app.set('views', 'public');
-app.set('view engine', 'html');
+app.set('view engine', 'ejs');
 app.set("port", process.env.PORT || 3000);
+app.engine('html', require('ejs').renderFile);
 
 
 app.get("/", function(req, res){
 	res.render("index.html");
-})
-var buses = require('./buses')
-app.use('/buses', buses)
+});
+app.get("/buses/3", function(req, res){
+	res.render("bus.html");
+});
+
 
 
 
