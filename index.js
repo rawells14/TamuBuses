@@ -20,9 +20,6 @@ app.get("/buses/3", function(req, res){
 	res.render("bus.html");
 });
 
-
-
-
 io.on('connection', function(socket){
 	console.log('a user connected');
 });

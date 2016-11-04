@@ -6,7 +6,7 @@ body{
   padding-top: 5%;
   font-weight: 200;
   color: #b71c1c;
-  font-size: 3.56rem;
+  font-size: 3.75rem;
   padding-bottom: 5%;
 }
 .center{
@@ -16,4 +16,11 @@ body{
 }
 #bus-routes{
 
+}
+#time{
+  padding-top: 5%;
+  font-weight: 200;
+  color: #b71c1c;
+  font-size: 3.2rem;
+  padding-bottom: 5%;
 }
