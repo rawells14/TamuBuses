@@ -19,24 +19,8 @@ app.get("/", function(req, res){
 	res.render("index.html");
 });
 app.get("/buses/3", function(req, res){
-
-	url = 'http://transport.tamu.edu/BusRoutes/Routes.aspx?r=03';
-    request(url, function(error, response, html){
-
-        // First we'll check to make sure no errors occurred when making the request
-
-        if(!error){
-            // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
-						console.log("howdy");
-            var $ = cheerio.load(html);
-
-            // Finally, we'll define the variables we're going to capture
-
-            var title, release, rating;
-            var json = { title : "", release : "", rating : ""};
-        }
-    })
-		res.send("hello");
+	json = getBusData(3);
+	res.send(json);
 });
 
 io.on('connection', function(socket){
@@ -46,3 +30,21 @@ io.on('connection', function(socket){
 http.listen(app.get("port"), function(){
 	console.log("Listening on port 3000");
 });
+
+
+function getBusData(bus, callback){
+	url = 'http://transport.tamu.edu/BusRoutes/Routes.aspx?r=0'+bus;
+
+
+	request(url, function(error, response, html){
+
+		if(!error){
+			var $ = cheerio.load(html);
+			var data = { busStops : [], busTimes : []};
+			$(".headRow > th").each(function(i, v){
+        data.busStops.push($(this).text());
+			});
+		}
+		
+	});
+};
