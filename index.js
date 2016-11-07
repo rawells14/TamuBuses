@@ -19,8 +19,9 @@ app.get("/", function(req, res){
 	res.render("index.html");
 });
 app.get("/buses/3", function(req, res){
-	json = getBusData(3);
-	res.send(json);
+	getBusData(3, function(data) {
+  res.send(data);
+	});
 });
 
 io.on('connection', function(socket){
@@ -37,14 +38,13 @@ function getBusData(bus, callback){
 
 
 	request(url, function(error, response, html){
-
+		var data = { busStops : [], busTimes : []};
 		if(!error){
 			var $ = cheerio.load(html);
-			var data = { busStops : [], busTimes : []};
 			$(".headRow > th").each(function(i, v){
         data.busStops.push($(this).text());
 			});
 		}
-		
+		callback(data);
 	});
 };
