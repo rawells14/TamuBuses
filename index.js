@@ -19,9 +19,10 @@ app.get("/", function(req, res){
 	res.render("index.html");
 });
 app.get("/buses/:id", function(req, res){
-	getBusData(req.params.id, function(data) {
-		res.send(data);
-	});
+	// getBusData(req.params.id, function(data) {
+	// 	res.send(data);
+	// });
+	res.render("bus.html");
 });
 
 io.on('connection', function(socket){
