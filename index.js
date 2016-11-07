@@ -18,8 +18,8 @@ app.engine('html', require('ejs').renderFile);
 app.get("/", function(req, res){
 	res.render("index.html");
 });
-app.get("/buses/3", function(req, res){
-	getBusData(3, function(data) {
+app.get("/buses/:id", function(req, res){
+	getBusData(req.params.id, function(data) {
 		res.send(data);
 	});
 });
@@ -43,15 +43,13 @@ function getBusData(bus, callback){
 			// removes arrive/leave row
 			$("#TimeTableGridView > tr").first().remove();
 
-			$(".headRow > th").each(function(i, v){
-				data.busStops.push($(this).text());
-			});
-
 			$("#TimeTableGridView > tr > td").each(function(i, v) {
 				$this = $(this)
-
+				$time =$this.children();
 				var $th = $this.closest('table').find('th').eq($this.index());
-				console.log($th.html());
+				data.busStops.push($th.html());
+				data.busTimes.push($time.attr());
+
 			});
 			$('.timetable').children('tbody').each(function(i, v){
 				//console.log($(this).html());
