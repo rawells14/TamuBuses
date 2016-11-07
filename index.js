@@ -20,7 +20,7 @@ app.get("/", function(req, res){
 });
 app.get("/buses/3", function(req, res){
 	getBusData(3, function(data) {
-  res.send(data);
+		res.send(data);
 	});
 });
 
@@ -36,13 +36,25 @@ http.listen(app.get("port"), function(){
 function getBusData(bus, callback){
 	url = 'http://transport.tamu.edu/BusRoutes/Routes.aspx?r=0'+bus;
 
-
 	request(url, function(error, response, html){
 		var data = { busStops : [], busTimes : []};
 		if(!error){
 			var $ = cheerio.load(html);
+			// removes arrive/leave row
+			$("#TimeTableGridView > tr").first().remove();
+
 			$(".headRow > th").each(function(i, v){
-        data.busStops.push($(this).text());
+				data.busStops.push($(this).text());
+			});
+
+			$("#TimeTableGridView > tr > td").each(function(i, v) {
+				$this = $(this)
+
+				var $th = $this.closest('table').find('th').eq($this.index());
+				console.log($th.html());
+			});
+			$('.timetable').children('tbody').each(function(i, v){
+				//console.log($(this).html());
 			});
 		}
 		callback(data);
