@@ -19,14 +19,19 @@ app.get("/", function(req, res){
 	res.render("index.html");
 });
 app.get("/buses/:id", function(req, res){
-	// getBusData(req.params.id, function(data) {
-	// 	res.send(data);
-	// });
 	res.render("bus.html");
 });
 
 io.on('connection', function(socket){
 	console.log('a user connected');
+	// When a new user connects, it will serve the latest data from Tamu
+	// bus servers
+	socket.on('busData', function(busID){
+	 getBusData(busID, function(data) {
+		socket.emit('busData', data);
+	});
+});
+
 });
 
 http.listen(app.get("port"), function(){
