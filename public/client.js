@@ -5,19 +5,24 @@ var selectedBusStop = '';
 var hoursRemaining;
 var minutesRemaining;
 var secondsRemaining;
+var selectIndex = 1;
 // request the data for bus three from server
-socket.emit('busData', 3);
+var busNum = window.location.pathname;
+busNum = parseInt(busNum.substring(7));
 
 $( document ).ready(function() {
-
   Materialize.fadeInImage('#title')
   Materialize.fadeInImage('#time');
 
+  getDataFromServer();
+});
+
+function getDataFromServer(){
+  socket.emit('busData', busNum );
   socket.on('busData', function(bd){
+    console.log('got updated data');
     busData = bd;
     parseBusStops();
-    // temporary
-    selectIndex = 1;
     selectedBusStop = busStops[selectIndex];
     var dateDifference = 0;
     var currentdate = new Date();
@@ -40,20 +45,28 @@ $( document ).ready(function() {
     secondsRemaining = Math.floor(secondsRemaining) % 60;
     countdown();
   });
-});
+}
 
 
 function countdown() {
   $("#minutes").html(minutesRemaining);
+  if (secondsRemaining.toString().length==1) {
+    $("#seconds").html("0"+secondsRemaining);
+  }else{
   $("#seconds").html(secondsRemaining);
-  console.log(hoursRemaining+':'+minutesRemaining+':'+secondsRemaining)
+}
+  console.log(minutesRemaining+':'+secondsRemaining)
 
   if (secondsRemaining<=0) {
     minutesRemaining--;
     secondsRemaining = 60+secondsRemaining;
   }
+  if(minutesRemaining<0){
+    getDataFromServer();
+    return;
+  }
   secondsRemaining--;
-  timeoutMyOswego = setTimeout(countdown, 1000);
+  timeout = setTimeout(countdown, 1000);
 }
 
 
@@ -65,5 +78,8 @@ function parseBusStops(){
     }else{
       busStops.push(busData.busStops[i]);
     }
+  }
+  for (var i = 0; i < busStops.length; i++) {
+    $("#stop-tabs").append('<li class="tab col s3"><a href="#">'+busStops[i]+'</a></li>');
   }
 }
