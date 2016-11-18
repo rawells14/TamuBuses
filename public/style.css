@@ -6,8 +6,12 @@ body{
   padding-top: 5%;
   font-weight: 200;
   color: #b71c1c;
-  font-size: 3.75rem;
-  padding-bottom: 5%;
+  font-size: 4.5rem;
+  padding-bottom: 3%;
+}
+.bus-stop-tab{
+  font-size: 2.5rem;
+  font-weight: 400;
 }
 .center{
   margin-left: auto;
@@ -24,9 +28,28 @@ body{
   margin-left: auto;
   margin-right:auto;
   text-align: center;
+  padding-top: 1%;
+  font-weight: 200;
+  color: #b71c1c;
+  font-size: 4.0rem;
+  padding-bottom: 1%;
+}
+#pickup-location{
+  margin-left: auto;
+  margin-right:auto;
+  text-align: center;
+  font-weight: 200;
+  color: #b71c1c;
+  padding-bottom: 1%;
+  font-size: 2.0rem;
+}
+#location{
+  margin-left: auto;
+  margin-right:auto;
+  text-align: center;
   padding-top: 5%;
   font-weight: 200;
   color: #b71c1c;
-  font-size: 3.8rem;
+  font-size: 2.0rem;
   padding-bottom: 5%;
 }
