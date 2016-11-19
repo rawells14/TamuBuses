@@ -8,6 +8,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 app.set("port", process.env.PORT || 8080);
+
 app.use(express.static('public'));
 app.set('views', 'public');
 app.set('view engine', 'ejs');
