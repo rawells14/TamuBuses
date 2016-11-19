@@ -7,11 +7,10 @@ var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 8080);
 app.use(express.static('public'));
 app.set('views', 'public');
 app.set('view engine', 'ejs');
-app.set("port", process.env.PORT || 3000);
 app.engine('html', require('ejs').renderFile);
 
 
@@ -35,7 +34,7 @@ io.on('connection', function(socket){
 });
 
 http.listen(app.get("port"), function(){
-	console.log("Listening on port 3000");
+	console.log("Server Running on ");
 });
 
 
