@@ -7,7 +7,7 @@ var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-app.set("port", process.env.PORT || 8080);
+app.set("port", 8080);
 
 app.use(express.static('public'));
 app.set('views', 'public');
@@ -35,7 +35,7 @@ io.on('connection', function(socket){
 });
 
 http.listen(app.get("port"), function(){
-	console.log("Server Running on ");
+	console.log("Server Running on 8080");
 });
 
 
