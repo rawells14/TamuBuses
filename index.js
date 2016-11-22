@@ -24,7 +24,6 @@ app.get("/buses/:id", function(req, res){
 });
 
 io.on('connection', function(socket){
-	console.log('a user connected');
 	// When a new user connects, it will serve the latest data from Tamu
 	// bus servers
 	socket.on('busData', function(busID){
@@ -44,7 +43,6 @@ function getBusData(bus, callback){
 	if(bus.toString().length==1){
 		bus = '0' + bus;
 	}
-	console.log(bus);
 	url = 'http://transport.tamu.edu/BusRoutes/Routes.aspx?r='+bus;
 
 	request(url, function(error, response, html){
