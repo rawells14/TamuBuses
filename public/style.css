@@ -9,6 +9,9 @@ body{
   font-size: 4.5rem;
   padding-bottom: 3%;
 }
+.vert-space{
+  padding-top: 3%;
+}
 .bus-stop-tab{
   font-size: 2.5rem;
   font-weight: 400;
