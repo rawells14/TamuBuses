@@ -6,8 +6,9 @@ var app = express();
 var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
-app.set("port", 3000);
+var port = 80;
+//uses port 80 on the production server
+app.set("port", port);
 
 app.use(express.static('public'));
 app.set('views', 'public');
