@@ -69,7 +69,8 @@ function countdown() {
     secondsRemaining = 60+secondsRemaining;
   }
   if(minutesRemaining<0){
-    $("")
+    $("#time").html("Your bus is here!");
+    Materialize.fadeInImage('#time')
     return;
   }
   secondsRemaining--;
