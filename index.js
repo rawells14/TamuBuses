@@ -41,7 +41,11 @@ http.listen(app.get("port"), function(){
 
 
 function getBusData(bus, callback){
-	url = 'http://transport.tamu.edu/BusRoutes/Routes.aspx?r=0'+bus;
+	if(bus.toString().length==1){
+		bus = '0' + bus;
+	}
+	console.log(bus);
+	url = 'http://transport.tamu.edu/BusRoutes/Routes.aspx?r='+bus;
 
 	request(url, function(error, response, html){
 		var data = { busStops : [], busTimes : []};
