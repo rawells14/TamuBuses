@@ -8,6 +8,7 @@ var secondsRemaining;
 var selectIndex = 0;
 // request the data for bus three from server
 var busNum = window.location.pathname;
+var noBuses = false;
 busNum = parseInt(busNum.substring(7));
 
 $( document ).ready(function() {
@@ -33,6 +34,7 @@ function getDataFromServer(){
     calcDiffs();
     countdown();
   });
+
 }
 function calcDiffs(){
   var dateDifference = 0;
@@ -49,12 +51,15 @@ function calcDiffs(){
       break;
     }
   }
+  if (dateDifference == 0) {
+    noBuses = true;
+    return;
+  }
   secondsRemaining = Math.floor(dateDifference)/1000;
   console.log(secondsRemaining);
   minutesRemaining = Math.floor(secondsRemaining/60);
   secondsRemaining = Math.floor(secondsRemaining) % 60;
 }
-
 function countdown() {
   $("#minutes").html(minutesRemaining);
   if (secondsRemaining.toString().length==1) {
@@ -68,7 +73,13 @@ function countdown() {
     minutesRemaining--;
     secondsRemaining = 60+secondsRemaining;
   }
-  if(minutesRemaining<0){
+  console.log(noBuses)
+  if(noBuses){
+    $("#time").html("There are no buses availiable for the rest of today");
+    Materialize.fadeInImage('#time')
+    return;
+  }
+  else if(minutesRemaining<0){
     $("#time").html("Your bus is here!");
     Materialize.fadeInImage('#time')
     return;
