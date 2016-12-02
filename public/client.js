@@ -56,7 +56,6 @@ function calcDiffs(){
     return;
   }
   secondsRemaining = Math.floor(dateDifference)/1000;
-  console.log(secondsRemaining);
   minutesRemaining = Math.floor(secondsRemaining/60);
   secondsRemaining = Math.floor(secondsRemaining) % 60;
 }
@@ -67,13 +66,11 @@ function countdown() {
   }else{
     $("#seconds").html(secondsRemaining);
   }
-  console.log(minutesRemaining+':'+secondsRemaining)
 
   if (secondsRemaining<=0) {
     minutesRemaining--;
     secondsRemaining = 60+secondsRemaining;
   }
-  console.log(noBuses)
   if(noBuses){
     $("#time").html("There are no buses availiable for the rest of today");
     Materialize.fadeInImage('#time')
@@ -90,7 +87,7 @@ function countdown() {
 
 
 function parseBusStops(){
-  for(var i = 0; i < busData.busStops.length; i++){
+  for(var i = 0; i < busData.busStops.length - 1; i++){
     if (i!=0 && busData.busStops[0] == busData.busStops[i]) {
       busStops.push(busData.busStops[i]);
       break;
@@ -98,12 +95,15 @@ function parseBusStops(){
       busStops.push(busData.busStops[i]);
     }
   }
+  // The last bus stop is always the "arrival" to the main hub. Therefore it is redundant to have both the first and last stops so I removed the last one
+  for (var i = 0; i < busStops.length - 1; i++) {
 
-  for (var i = 0; i < busStops.length; i++) {
+    colWidth = (13 / (busStops.length - 1)) | 0;
+
     if (i==0) {
-      $("#stop-tabs").append('<li class="tab col s3"><a class="active bus-stop-tab" id="bus-stop'+i+'" href="#">'+busStops[i]+'</a></li>');
+      $("#stop-tabs").append('<li class="tab col s'+colWidth+'"><a class="bus-stop-tab active" id="bus-stop'+i+'" href="#">'+busStops[i]+'</a></li>');
     }else{
-    $("#stop-tabs").append('<li class="tab col s3"><a class="bus-stop-tab" id="bus-stop'+i+'" href="#">'+busStops[i]+'</a></li>');
+    $("#stop-tabs").append('<li class="tab col s'+colWidth+'"><a class="bus-stop-tab" id="bus-stop'+i+'" href="#">'+busStops[i]+'</a></li>');
   }
   $("#location").html(" @ "+busStops[0]);
 }
@@ -114,6 +114,5 @@ function parseBusStops(){
     selectIndex = id;
     $("#location").html(" @ "+busStops[selectIndex]);
     calcDiffs();
-    console.log(selectIndex);
   });
 }

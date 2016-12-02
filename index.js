@@ -6,7 +6,7 @@ var app = express();
 var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var port = 80;
+var port = 3000;
 //uses port 80 on the production server
 app.set("port", port);
 
@@ -58,7 +58,6 @@ function getBusData(bus, callback){
 				var $th = $this.closest('table').find('th').eq($this.index());
 				data.busStops.push($th.html());
 				data.busTimes.push($time.attr());
-
 			});
 			$('.timetable').children('tbody').each(function(i, v){
 				//console.log($(this).html());
