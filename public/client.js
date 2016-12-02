@@ -80,7 +80,7 @@ function countdown() {
     return;
   }
   else if(minutesRemaining<0){
-    $("#time").html("Your bus is here!");
+    $("#time").html("Your bus is departing!");
     Materialize.fadeInImage('#time')
     return;
   }
