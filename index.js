@@ -35,7 +35,7 @@ io.on('connection', function(socket){
 });
 
 http.listen(app.get("port"), function(){
-	console.log("Server Running on 3000");
+	console.log("Server Running on "+port);
 });
 
 
