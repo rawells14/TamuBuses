@@ -1,4 +1,4 @@
-var socket = io();
+var socket;
 var busData = {};
 var busStops = [];
 var selectedBusStop = '';
@@ -12,11 +12,10 @@ var noBuses = false;
 busNum = parseInt(busNum.substring(7));
 
 $( document ).ready(function() {
+  socket = io();
   Materialize.fadeInImage('#title')
   Materialize.fadeInImage('#time');
-
   getDataFromServer();
-
 });
 
 function getDataFromServer(){
