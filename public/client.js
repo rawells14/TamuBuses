@@ -83,7 +83,11 @@ function countdown() {
     return;
   }
   secondsRemaining--;
-  timeout = setTimeout(countdown, 999);
+  // creating a pseudosecond clock
+  deltaT = (new Date).getTime() - t1;
+  console.log(deltaT);
+  // recursively call countdown again
+  timeout = setTimeout(countdown, 1000 - deltaT);
 }
 
 
