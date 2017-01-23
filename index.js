@@ -40,6 +40,9 @@ http.listen(app.get("port"), function(){
 
 
 function getBusData(bus, callback){
+	if (bus == null){
+		return;
+	}
 	if(bus.toString().length==1){
 		bus = '0' + bus;
 	}
