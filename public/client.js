@@ -60,6 +60,7 @@ function calcDiffs(){
   secondsRemaining = Math.floor(secondsRemaining) % 60;
 }
 function countdown() {
+  t1 = (new Date).getTime();
   $("#minutes").html(minutesRemaining);
   if (secondsRemaining.toString().length==1) {
     $("#seconds").html("0"+secondsRemaining);
