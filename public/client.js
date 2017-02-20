@@ -28,11 +28,17 @@ function getDataFromServer(){
   socket.on('busData', function(bd){
     console.log('Got updated data');
     busData = bd;
-    parseBusStops();
-    selectedBusStop = busStops[selectIndex];
-    calcDiffs();
-    countdown();
     console.log(busData);
+    if(busData.busStops.length > 1){
+      parseBusStops();
+      selectedBusStop = busStops[selectIndex];
+      calcDiffs();
+      countdown();
+    }else{
+      $("#time").html("There are no buses availiable for the rest of today");
+      Materialize.fadeInImage('#time')
+      return;
+    }
   });
 
 }
@@ -100,6 +106,7 @@ function parseBusStops(){
       busStops.push(busData.busStops[i]);
     }
   }
+
   // The last bus stop is always the "arrival" to the main hub. Therefore it is redundant to have both the first and last stops so I removed the last one
   for (var i = 0; i < busStops.length - 1; i++) {
     colWidth = (13 / (busStops.length - 1)) | 0;
@@ -110,13 +117,16 @@ function parseBusStops(){
     }
     $("#location").html(" @ "+busStops[0]);
   }
+  console.log('here');
   $(".bus-stop-tab").click(function() {
+
     id = ($(this).attr("id"));
     id = id.replace("bus-stop", "");
     id = parseInt(id);
     selectIndex = id;
     $("#location").html(" @ "+busStops[selectIndex]);
     // Add all upcoming stops
+
     $("#time-font").html("");
     var currentdate = new Date
     for(var i = selectIndex; i < busData.busTimes.length; i=i+busStops.length){
@@ -132,6 +142,7 @@ function parseBusStops(){
         console.log(formatAMPM(cur));
       }
     }
+
     calcDiffs();
   });
 }
