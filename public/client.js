@@ -28,7 +28,7 @@ function getDataFromServer(){
   socket.on('busData', function(bd){
     console.log('Got updated data');
     busData = bd;
-    console.log(busData);
+
     if(busData.busStops.length > 1){
       parseBusStops();
       selectedBusStop = busStops[selectIndex];
@@ -117,7 +117,6 @@ function parseBusStops(){
     }
     $("#location").html(" @ "+busStops[0]);
   }
-  console.log('here');
   $(".bus-stop-tab").click(function() {
 
     id = ($(this).attr("id"));
