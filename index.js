@@ -6,8 +6,8 @@ var app = express();
 var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var port = 80;
-//uses port 80 on the production server
+var port = 3000;
+//uses port 80 on the production server, use 3000 when on public wifi
 app.set("port", port);
 
 app.use(express.static('public'));
