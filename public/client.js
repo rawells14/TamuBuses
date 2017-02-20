@@ -11,7 +11,7 @@ var busNum = window.location.pathname;
 var noBuses = false;
 busNum = parseInt(busNum.substring(7));
 
-$(document).ready(function() {
+$( document ).ready(function() {
   socket = io();
   Materialize.fadeInImage('#title')
   Materialize.fadeInImage('#time');
@@ -32,7 +32,6 @@ function getDataFromServer(){
     selectedBusStop = busStops[selectIndex];
     calcDiffs();
     countdown();
-    console.log(busData);
   });
 
 }
@@ -87,7 +86,7 @@ function countdown() {
   deltaT = (new Date).getTime() - t1;
   console.log(deltaT);
   // recursively call countdown again
-  timeout = setTimeout(countdown, 1000 - deltaT - 1);
+  timeout = setTimeout(countdown, 1000 - deltaT);
 }
 
 
@@ -102,46 +101,22 @@ function parseBusStops(){
   }
   // The last bus stop is always the "arrival" to the main hub. Therefore it is redundant to have both the first and last stops so I removed the last one
   for (var i = 0; i < busStops.length - 1; i++) {
+
     colWidth = (13 / (busStops.length - 1)) | 0;
+
     if (i==0) {
       $("#stop-tabs").append('<li class="tab col s'+colWidth+'"><a class="bus-stop-tab active" id="bus-stop'+i+'" href="#">'+busStops[i]+'</a></li>');
     }else{
-      $("#stop-tabs").append('<li class="tab col s'+colWidth+'"><a class="bus-stop-tab" id="bus-stop'+i+'" href="#">'+busStops[i]+'</a></li>');
-    }
-    $("#location").html(" @ "+busStops[0]);
+    $("#stop-tabs").append('<li class="tab col s'+colWidth+'"><a class="bus-stop-tab" id="bus-stop'+i+'" href="#">'+busStops[i]+'</a></li>');
   }
+  $("#location").html(" @ "+busStops[0]);
+}
   $(".bus-stop-tab").click(function() {
     id = ($(this).attr("id"));
     id = id.replace("bus-stop", "");
     id = parseInt(id);
     selectIndex = id;
     $("#location").html(" @ "+busStops[selectIndex]);
-    // Add all upcoming stops
-    $("#time-font").html("");
-    var currentdate = new Date
-    for(var i = selectIndex; i < busData.busTimes.length; i=i+busStops.length){
-      if (busData.busTimes[i]==null) {
-        continue;
-      }
-      cur = new Date(busData.busTimes[i].datetime);
-
-      if (cur-currentdate < 0) {
-        continue;
-      }else{
-        $("#time-font").append('<li class="collection-item">'+formatAMPM(cur)+'</li>')
-        console.log(formatAMPM(cur));
-      }
-    }
     calcDiffs();
   });
-}
-function formatAMPM(date) {
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0'+minutes : minutes;
-  var strTime = hours + ':' + minutes + ' ' + ampm;
-  return strTime;
 }
