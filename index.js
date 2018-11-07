@@ -16,66 +16,116 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 
-app.get("/", function(req, res){
+app.get("/", function (req, res) {
 	res.render("index.html");
 });
-app.get("/buses/:id", function(req, res){
+app.get("/buses/:id", function (req, res) {
 	res.render("bus.html");
 });
-app.get("/api/buses/:id", function(req, res){
+app.get("/api/buses/:id", function (req, res) {
 	busNumber = req.params["id"];
-	getBusData(busNumber, (data) =>{
-		if(data["busStops"].length == 0 || data["busTimes"] == 0){
-			res.send({"message" : "No more buses today or bus may not exist"});
-		}else{
+	getBusData(busNumber, (data) => {
+		if (data["busStops"].length == 0 || data["busTimes"] == 0) {
+			res.send({
+				"message": "No more buses today or bus may not exist"
+			});
+		} else {
 			res.send(JSON.stringify(data));
 		}
-		
+
 	})
-	
+});
+app.get("/api/friendlybuses/:id", function (req, res) {
+	busNumber = req.params["id"];
+	getBusData(busNumber, (data) => {
+		toSend = {};
+		toSend["busStops"] = [];
+		
+		if (data["busStops"].length == 0 || data["busTimes"] == 0) {
+			toSend = {
+				"message": "No more buses today or bus may not exist"
+			};
+		} else {
+			for (var i = 0; i < data["busStops"].length - 1; i++) {
+				if (i != 0 && data["busStops"][0] == data["busStops"][i]) {
+					toSend['busStops'].push({"name" : data["busStops"][i]});
+					break;
+				} else {
+					toSend['busStops'].push({"name" : data["busStops"][i]});
+				}
+			}
+			var currentDate = new Date;
+			var numRecorded = 0;
+			for(var i = 0; i < data["busTimes"].length; i++){
+				if(data["busTimes"][i] === undefined || data["busTimes"][i]["datetime"] === undefined){
+					continue;
+				}
+				var dateOfBus = new Date(data["busTimes"][i]["datetime"]);
+				console.log(dateOfBus);
+				if(dateOfBus - currentDate >= 0){
+					console.log(toSend["busStops"][numRecorded]);
+					// FIXME
+					toSend["busStops"][numRecorded]["departure"] = dateOfBus;
+					numRecorded++;
+				}if(numRecorded >= toSend["busStops"].length){
+					break;
+				}
+			}
+
+
+		}
+
+		res.send(JSON.stringify(toSend));
+
+
+
+	})
+
 });
 
-
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
 	// When a new user connects, it will serve the latest data from Tamu
 	// bus servers
-	socket.on('busData', function(busID){
-	 getBusData(busID, function(data) {
-		socket.emit('busData', data);
+	socket.on('busData', function (busID) {
+		getBusData(busID, function (data) {
+			socket.emit('busData', data);
+		});
 	});
-});
 
 });
 
-http.listen(app.get("port"), function(){
-	console.log("Server Running on "+port);
+http.listen(app.get("port"), function () {
+	console.log("Server Running on " + port);
 });
 
 
-function getBusData(bus, callback){
-	if (bus == null){
+function getBusData(bus, callback) {
+	if (bus == null) {
 		return;
 	}
-	if(bus.toString().length==1){
+	if (bus.toString().length == 1) {
 		bus = '0' + bus;
 	}
-	url = 'http://transport.tamu.edu/BusRoutes/Routes.aspx?r='+bus;
+	url = 'http://transport.tamu.edu/BusRoutes/Routes.aspx?r=' + bus;
 
-	request(url, function(error, response, html){
-		var data = { busStops : [], busTimes : []};
-		if(!error){
+	request(url, function (error, response, html) {
+		var data = {
+			busStops: [],
+			busTimes: []
+		};
+		if (!error) {
 			var $ = cheerio.load(html);
 			// removes arrive/leave row
 			$("#TimeTableGridView > tr").first().remove();
 
-			$("#TimeTableGridView > tr > td").each(function(i, v) {
+			$("#TimeTableGridView > tr > td").each(function (i, v) {
 				$this = $(this)
-				$time =$this.children();
+				$time = $this.children();
 				var $th = $this.closest('table').find('th').eq($this.index());
 				data.busStops.push($th.html());
 				data.busTimes.push($time.attr());
 			});
-			$('.timetable').children('tbody').each(function(i, v){
+			$('.timetable').children('tbody').each(function (i, v) {
 				//console.log($(this).html());
 			});
 		}
