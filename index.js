@@ -22,6 +22,11 @@ app.get("/", function(req, res){
 app.get("/buses/:id", function(req, res){
 	res.render("bus.html");
 });
+app.get("/buses/:id", function(req, res){
+	// getBusData(:id)
+	res.send();
+});
+
 
 io.on('connection', function(socket){
 	// When a new user connects, it will serve the latest data from Tamu
