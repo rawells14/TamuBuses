@@ -69,10 +69,9 @@ app.get("/api/friendlybuses/:id", function (req, res) {
 					break;
 				}
 			}
+			console.log(toSend);
 			for (var key in toSend['busStops']) {
-				if(toSend['busStops'][key]['departure'] === undefined){
-					continue;
-				}
+				
 				var hours = toSend['busStops'][key]['departure'].getHours();
 				var minutes = toSend['busStops'][key]['departure'].getMinutes();
 				var ampm = hours >= 12 ? 'pm' : 'am';
