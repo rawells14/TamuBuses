@@ -6,7 +6,7 @@ var app = express();
 var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var port = 80;
+var port = 3000;
 //uses port 80 on the production server, use 3000 when on public wifi
 app.set("port", port);
 
@@ -22,9 +22,17 @@ app.get("/", function(req, res){
 app.get("/buses/:id", function(req, res){
 	res.render("bus.html");
 });
-app.get("/buses/:id", function(req, res){
-	// getBusData(:id)
-	res.send();
+app.get("/api/buses/:id", function(req, res){
+	busNumber = req.params["id"];
+	getBusData(busNumber, (data) =>{
+		if(data["busStops"].length == 0 || data["busTimes"] == 0){
+			res.send({"message" : "No more buses today or bus may not exist"});
+		}else{
+			res.send(JSON.stringify(data));
+		}
+		
+	})
+	
 });
 
 
