@@ -46,29 +46,27 @@ app.get("/api/friendlybuses/:id", function (req, res) {
 				"message": "No more buses today or bus may not exist"
 			};
 		} else {
-			for (var i = 0; i < data["busStops"].length - 1; i++) {
-				if (i != 0 && data["busStops"][0] == data["busStops"][i]) {
-					toSend['busStops'].push({"name" : data["busStops"][i]});
-					break;
-				} else {
-					toSend['busStops'].push({"name" : data["busStops"][i]});
-				}
-			}
+			
 			var currentDate = new Date;
-			var numRecorded = 0;
 			for(var i = 0; i < data["busTimes"].length; i++){
 				if(data["busTimes"][i] === undefined || data["busTimes"][i]["datetime"] === undefined){
 					continue;
 				}
 				var dateOfBus = new Date(data["busTimes"][i]["datetime"]);
-				if(dateOfBus - currentDate >= 0){
-					// FIXME
-					toSend["busStops"][numRecorded]["departure"] = dateOfBus;
-					numRecorded++;
-				}if(numRecorded >= toSend["busStops"].length){
-					break;
+				if(i != 0 && dateOfBus - currentDate >= 0){
+					toSend['busStops'].push({"name" : data["busStops"][i], "departure" : dateOfBus});
 				}
 			}
+			
+			for(var i =0; i < toSend['busStops'].length; i++){
+				if(i != 0 && toSend['busStops'][i]["name"] === toSend['busStops'][0]["name"]){
+					toSend['busStops'].length = i + 1;
+				}
+			}
+
+
+
+			console.log("----------------------------------------------------------")
 			console.log(toSend);
 			for (var key in toSend['busStops']) {
 				
