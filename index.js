@@ -6,7 +6,7 @@ var app = express();
 var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var port = 3000;
+var port = 80;
 //uses port 80 on the production server, use 3000 when on public wifi
 app.set("port", port);
 
@@ -61,15 +61,23 @@ app.get("/api/friendlybuses/:id", function (req, res) {
 					continue;
 				}
 				var dateOfBus = new Date(data["busTimes"][i]["datetime"]);
-				console.log(dateOfBus);
 				if(dateOfBus - currentDate >= 0){
-					console.log(toSend["busStops"][numRecorded]);
 					// FIXME
 					toSend["busStops"][numRecorded]["departure"] = dateOfBus;
 					numRecorded++;
 				}if(numRecorded >= toSend["busStops"].length){
 					break;
 				}
+			}
+			for (var key in toSend['busStops']) {
+				var hours = toSend['busStops'][key]['departure'].getHours();
+				var minutes = toSend['busStops'][key]['departure'].getMinutes();
+				var ampm = hours >= 12 ? 'pm' : 'am';
+				hours = hours % 12;
+				hours = hours ? hours : 12; // the hour '0' should be '12'
+				minutes = minutes < 10 ? '0'+minutes : minutes;
+				var strTime = hours + ':' + minutes + ' ' + ampm;
+				toSend['busStops'][key]['departure'] = strTime;
 			}
 
 
